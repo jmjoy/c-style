@@ -7,22 +7,32 @@
 
 
 ;; (code-block
-;;  (:var a "A"))
+;;  (:let a "A"))
 
 ;; (code-block
-;;  (:var a "A")
+;;  (:let a "A")
 ;;  (println a)
-;;  (:var b "B")
+;;  (:let b "B")
 ;;  (println b))
 
 ;; (code-block
-;;  (:var a "A")
+;;  (:let a "A")
 ;;  (println a)
-;;  (:var b "B"))
+;;  (:let b "B"))
 
 
 (code-block
- (:var a 1)
- (:var b 2)
- (+ a b))
+ (:let a 1)
+ (:let b 2)
+ (:let c (+ a b))
+ (:let [x & xs] [1 2 3 4 5])
+ [(+ a b c) x xs])
+
+
+(code-block
+ (:let f (fn [a] (+ a 999)))
+ (f 1))
+
+
+
 
