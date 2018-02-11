@@ -1,11 +1,13 @@
-(ns c-style-let.core)
+(ns c-style.core)
 
-;; 调整 :var -> :let
-;; code-block这个名字
-;; 去掉无用#
+(defn- nest-let [exprs last-expr]
+  "Recursive let form."
+  (if (empty? exprs)
+    last-expr
+    (list 'let (first exprs) (nest-let (rest exprs) last-expr))))
 
-(defmacro code-block
-  "C-Style variable definition."
+(defmacro do++
+  "Allow C-Style variable definition."
   [& exprs]
   (when exprs
     (let [[exprs [last-expr]]
@@ -17,12 +19,6 @@
               [(second expr) (nth expr 2)]
               ['_ expr]))]
 
-      (nest-let pairs (if (= :let (first last-expr))
+      (nest-let pairs (if (and (list? last-expr) (= :let (first last-expr)))
                          nil
                          last-expr)))))
-
-(defn- nest-let [exprs last-expr]
-  (if (empty? exprs)
-    last-expr
-    (list 'let (first exprs) (nest-let (rest exprs) last-expr))))
-
