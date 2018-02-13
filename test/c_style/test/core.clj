@@ -11,6 +11,17 @@
 
   (is (= '(let [a 1] a) (macroexpand-1 '(c-style.core/do++ (:let a 1) a))))
 
+  (is (= '(let [a (+ 1 2)] a)
+         (macroexpand-1 '(c-style.core/do++ (:let a (+ 1 2)) a))))
+
+  (is (= '(let [a (+ 1 2)]
+            (let [b (+ a 2)]
+              (+ a b)))
+         (macroexpand-1 '(c-style.core/do++
+                          (:let a (+ 1 2))
+                          (:let b (+ a 2))
+                          (+ a b)))))
+
   (is (= '(let [a 1] (+ a 2))
          (macroexpand-1
           '(c-style.core/do++ (:let a 1)
@@ -52,4 +63,6 @@
           (-> xs
                (conj x)
                (conj y))))))
+
+
 
