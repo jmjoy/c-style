@@ -1,4 +1,4 @@
-(defproject c-style "0.1.0"
+(defproject c-style "0.1.1"
   :description "A library bringing some c-style syntax to clojure."
   :url "http://github.com/jmjoy/c-style"
   :license {:name "Eclipse Public License"
