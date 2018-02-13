@@ -1,25 +1,23 @@
 (ns c-style.core)
 
-(defn- nest-let [exprs last-expr]
+(defn- var-expr? [expr]
+  "Check experssion is a variable definition."
+  (and (list? expr) (= :let (first expr))))
+
+(defn- convert-expr [expr]
+  "Convert expression to let first form."
+  (if (var-expr? expr)
+    [(second expr) (nth expr 2)]
+    ['_ expr]))
+
+(defn- nest-let [exprs]
   "Recursive let form."
-  (if (empty? exprs)
-    last-expr
-    (list 'let (first exprs) (nest-let (rest exprs) last-expr))))
+  (if (= 1 (count exprs))
+    (let [first-expr (first exprs)]
+      (if (var-expr? first-expr) nil first-expr))
+    (list 'let (convert-expr (first exprs)) (nest-let (rest exprs)))))
 
 (defmacro do++
   "Allow C-Style variable definition."
   [& exprs]
-  (when exprs
-    (let [[exprs [last-expr]]
-          (split-at (- (count exprs) 1) exprs)
-
-          pairs
-          (for [expr exprs]
-            (if (and (list? expr) (= (first expr) :let))
-              [(second expr) (nth expr 2)]
-              ['_ expr]))]
-
-      (nest-let pairs (if (and (list? last-expr) (= :let (first last-expr)))
-                         nil
-                         last-expr)))))
-
+  (when exprs (nest-let exprs)))
