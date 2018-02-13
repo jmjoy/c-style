@@ -1,17 +1,20 @@
 (ns c-style.core)
 
-(defn- var-expr? [expr]
+(defn- var-expr?
   "Check experssion is a variable definition."
+  [expr]
   (and (list? expr) (= :let (first expr))))
 
-(defn- convert-expr [expr]
+(defn- convert-expr
   "Convert expression to let first form."
+  [expr]
   (if (var-expr? expr)
     [(second expr) (nth expr 2)]
     ['_ expr]))
 
-(defn- nest-let [exprs]
+(defn- nest-let
   "Recursive let form."
+  [exprs]
   (if (= 1 (count exprs))
     (let [first-expr (first exprs)]
       (if (var-expr? first-expr) nil first-expr))
