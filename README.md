@@ -7,7 +7,7 @@ A library bringing some c-style syntax to clojure.
 With Leiningen/Boot:
 
 ```clojure
-[c-style "0.1.0"]
+[c-style "0.1.1"]
 ```
 
 ## Usage
