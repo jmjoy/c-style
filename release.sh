@@ -14,4 +14,4 @@ if [ $branch != "release" ]; then
 fi
 
 git checkout master && \
-    git merge --no-ff --comment "Release $version." release
+    git merge --no-ff -m "Release $version." release
