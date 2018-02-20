@@ -7,20 +7,18 @@ A library bringing some c-style syntax to clojure.
 With Leiningen/Boot:
 
 ```clojure
-[c-style "0.1.1"]
+[c-style "0.2.0"]
 ```
 
 ## Usage
 
 ```clojure
-(require '[c-style.core :refer :all])
+(require '[c-style.core :as c])
 
-;; The `do++` marco help you defined variables like c-family language.
-(do++
- (:let a 1)
- (:let [b & _] [2 3 4])
- (+ a b)) ;; => 3
-
+;; The `proc` marco help you defined variables like c-family language.
+(c/proc (:let a 1)
+        (:let [b & _] [2 3 4])
+        (+ a b)) ;; => 3
 ```
 
 ## License
