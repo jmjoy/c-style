@@ -6,4 +6,6 @@
   :min-lein-version "2.0.0"
   :dependencies [[org.clojure/clojure "1.8.0"]]
   :plugins [[lein-codox "0.10.3"]]
-  :codox {:output-path "docs"})
+  :codox {:output-path "docs"
+          :metadata {:doc/format :markdown}
+          :source-uri "https://github.com/jmjoy/c-style/blob/{version}/{filepath}#L{line}"})

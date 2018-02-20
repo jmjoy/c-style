@@ -22,19 +22,38 @@
     (list 'let (convert-expr (first exprs)) (nest-let (rest exprs)))))
 
 (defmacro proc
-  "Allow C-Style variable definition.
+  "Proc is a macro like `do`, but allow C-Style variable definition.
+  The form started with `:let` keyword is the variable definition,
+  and the variable scope is inside `proc`.
 
+  Example:
+  ```
   (proc (:let a 1)
         (:let [b & _] [2 3 4])
         (+ a b)) ;; => 3
-  "
+  ```"
   [& exprs]
   (when exprs (nest-let exprs)))
 
-;; (defmacro if-map
-;;   "")
+(defmacro cond-not
+  "Cond-not is relative to `cond` like `if` relative to `if-not`.
 
-;; (if-map [:condition1 [false "message1"]
-;;            :condition2 [false "message2"]
-;;            :condition3 [false "message3"]]
-;;           [true "ok"])
+  Example:
+  ```
+  (let [grade 85]
+         (cond-not
+           (<= grade 90) \"A\"
+           (<= grade 80) \"B\"
+           (<= grade 70) \"C\"
+           (<= grade 60) \"D\"
+           false \"F\")) ;; => \"B\"
+  ```"
+  [& clauses]
+  (when clauses
+    (let [clauses
+          (map (fn [i clause]
+                 (if (even? i) `(not ~clause) clause))
+               (range)
+               clauses)]
+      `(cond ~@clauses))))
+

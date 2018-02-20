@@ -25,12 +25,12 @@
   (is (= '(let [a 1] (+ a 2))
          (macroexpand-1
           '(c-style.core/proc (:let a 1)
-                 (+ a 2)))))
+                              (+ a 2)))))
 
   (is (= '(let [[x & xs] [1 2 3]] [xs x])
          (macroexpand-1
           '(c-style.core/proc (:let [x & xs] [1 2 3])
-                 [xs x]))))
+                              [xs x]))))
 
   (is (= '(let [a "A"]
             (let [_ (println a)]
@@ -53,16 +53,27 @@
             (:let b "B")))))
 
   (is (= 100
-          (c-style.core/proc
-           (:let a 1)
-           (+ a 99))))
+         (c-style.core/proc
+          (:let a 1)
+          (+ a 99))))
 
   (is (= [2 1 3 4]
          (c-style.core/proc
           (:let [x y & xs] [1 2 3 4])
           (-> xs
-               (conj x)
-               (conj y))))))
+              (conj x)
+              (conj y))))))
 
-
-
+(deftest test-cond-not
+  (is (= '(clojure.core/cond
+            (clojure.core/not (<= grade 90)) "A"
+            (clojure.core/not (<= grade 80)) "B"
+            (clojure.core/not (<= grade 70)) "C"
+            (clojure.core/not (<= grade 60)) "D"
+            (clojure.core/not false) "F")
+         (macroexpand-1 '(c-style.core/cond-not
+                          (<= grade 90) "A"
+                          (<= grade 80) "B"
+                          (<= grade 70) "C"
+                          (<= grade 60) "D"
+                          false "F")))))
