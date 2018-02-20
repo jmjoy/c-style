@@ -17,4 +17,5 @@ git checkout master && \
     git merge --no-ff -m "Release $version." release && \
     git push && \
     git tag $version && \
-    git push --tags
+    git push --tags && \
+    lein deploy clojars
